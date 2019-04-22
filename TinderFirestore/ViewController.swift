@@ -32,7 +32,8 @@ class ViewController: UIViewController {
         overallStackView.axis = .vertical
         
         view.addSubview(overallStackView)
-        overallStackView.fillSuperview()
+        
+        overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
     }
 
 
