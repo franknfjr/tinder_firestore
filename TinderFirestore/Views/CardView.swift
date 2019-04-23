@@ -10,7 +10,7 @@ import UIKit
 
 class CardView: UIView {
     
-    fileprivate let imageView = UIImageView(image: #imageLiteral(resourceName: "kelly3"))
+    let imageView = UIImageView(image: #imageLiteral(resourceName: "kelly3"))
     fileprivate let threshold: CGFloat = 80
     
     override init(frame: CGRect) {
@@ -19,6 +19,7 @@ class CardView: UIView {
         layer.cornerRadius = 10
         clipsToBounds = true
         
+        imageView.contentMode = .scaleAspectFill
         addSubview(imageView)
         imageView.fillSuperview()
         
@@ -59,11 +60,11 @@ class CardView: UIView {
         
         let shouldDismissCard = abs(gesture.translation(in: nil).x) > threshold
         
-        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseInOut, animations: {
             
             if shouldDismissCard {
                 
-                self.frame = CGRect(x: 1000 * translationDirection, y: 0, width: self.frame.width, height: self.frame.height)
+                self.frame = CGRect(x: 600 * translationDirection, y: 0, width: self.frame.width, height: self.frame.height)
                 
             } else {
                 
@@ -73,7 +74,9 @@ class CardView: UIView {
             
         }) { (_) in
             self.transform = .identity
-            self.frame = CGRect(x: 0, y: 0, width: self.superview!.frame.width, height: self.superview!.frame.height)
+            if shouldDismissCard {
+                self.removeFromSuperview()
+            }
         }
     }
 }

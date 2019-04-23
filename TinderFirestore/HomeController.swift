@@ -8,11 +8,16 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeController: UIViewController {
     
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let buttonStackView = HomeBottomControlsStackView()
+    
+    let users = [
+        User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "kelly3"),
+        User(name: "Jane", age: 18, profession: "Teacher", imageName: "jane3")
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,9 +45,12 @@ class ViewController: UIViewController {
     }
     
     fileprivate func setupDummyCards() {
-        let cardView = CardView(frame: .zero)
-        cardsDeckView.addSubview(cardView)
-        cardView.fillSuperview()
+        users.forEach { (user) in
+            let cardView = CardView(frame: .zero)
+            cardView.imageView.image = UIImage(named: user.imageName)
+            cardsDeckView.addSubview(cardView)
+            cardView.fillSuperview()
+        }
     }
 }
 
