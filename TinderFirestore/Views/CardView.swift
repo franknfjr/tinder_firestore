@@ -21,23 +21,12 @@ class CardView: UIView {
     let imageView = UIImageView(image: #imageLiteral(resourceName: "kelly3"))
     let informationLabel = UILabel()
     fileprivate let threshold: CGFloat = 80
+    let gradientLayer = CAGradientLayer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        layer.cornerRadius = 10
-        clipsToBounds = true
-        
-        imageView.contentMode = .scaleAspectFill
-        addSubview(imageView)
-        imageView.fillSuperview()
-        
-        addSubview(informationLabel)
-        
-        informationLabel.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 16))
-        informationLabel.numberOfLines = 0
-        informationLabel.textColor = .white
-        informationLabel.font = UIFont.systemFont(ofSize: 34, weight: .heavy)
+        setupLayout()
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         addGestureRecognizer(panGesture)
@@ -45,6 +34,23 @@ class CardView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    fileprivate func setupLayout() {
+        layer.cornerRadius = 10
+        clipsToBounds = true
+        
+        imageView.contentMode = .scaleAspectFill
+        addSubview(imageView)
+        imageView.fillSuperview()
+        
+        setupGradientLayer()
+        
+        addSubview(informationLabel)
+        
+        informationLabel.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 16))
+        informationLabel.numberOfLines = 0
+        informationLabel.textColor = .white
     }
     
     @objc fileprivate func handlePan(gesture: UIPanGestureRecognizer) {
@@ -94,5 +100,16 @@ class CardView: UIView {
                 self.removeFromSuperview()
             }
         }
+    }
+    
+    fileprivate func setupGradientLayer() {
+        gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        gradientLayer.locations = [0.5, 1.1]
+        
+        layer.addSublayer(gradientLayer)
+    }
+    
+    override func layoutSubviews() {
+        gradientLayer.frame = self.frame
     }
 }
