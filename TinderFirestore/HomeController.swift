@@ -48,6 +48,15 @@ class HomeController: UIViewController {
         users.forEach { (user) in
             let cardView = CardView(frame: .zero)
             cardView.imageView.image = UIImage(named: user.imageName)
+            cardView.informationLabel.text = "\(user.name) \(user.age)\n \(user.profession)"
+            
+            let attributedText = NSMutableAttributedString(string: user.name, attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
+            
+            attributedText.append(NSMutableAttributedString(string: "  \(user.age)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .light)]))
+            
+            attributedText.append(NSMutableAttributedString(string: "\n\(user.profession)", attributes: [.font: UIFont.systemFont(ofSize: 20, weight: .light)]))
+            
+            cardView.informationLabel.attributedText = attributedText
             cardsDeckView.addSubview(cardView)
             cardView.fillSuperview()
         }

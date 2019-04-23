@@ -11,6 +11,7 @@ import UIKit
 class CardView: UIView {
     
     let imageView = UIImageView(image: #imageLiteral(resourceName: "kelly3"))
+    let informationLabel = UILabel()
     fileprivate let threshold: CGFloat = 80
     
     override init(frame: CGRect) {
@@ -22,6 +23,13 @@ class CardView: UIView {
         imageView.contentMode = .scaleAspectFill
         addSubview(imageView)
         imageView.fillSuperview()
+        
+        addSubview(informationLabel)
+        
+        informationLabel.anchor(top: nil, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 16))
+        informationLabel.numberOfLines = 0
+        informationLabel.textColor = .white
+        informationLabel.font = UIFont.systemFont(ofSize: 34, weight: .heavy)
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         addGestureRecognizer(panGesture)
