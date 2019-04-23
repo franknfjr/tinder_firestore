@@ -18,10 +18,10 @@ class CardView: UIView {
         }
     }
     
-    let imageView = UIImageView(image: #imageLiteral(resourceName: "kelly3"))
-    let informationLabel = UILabel()
+    fileprivate let imageView = UIImageView(image: #imageLiteral(resourceName: "kelly3"))
+    fileprivate let informationLabel = UILabel()
     fileprivate let threshold: CGFloat = 80
-    let gradientLayer = CAGradientLayer()
+    fileprivate let gradientLayer = CAGradientLayer()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
