@@ -16,8 +16,8 @@ class HomeController: UIViewController {
     
     let cardViewModels: [CardViewModel] = {
         let producers = [
-            User(name: "Kelly", age: 23, profession: "Music DJ", imageName: "kelly3"),
-            User(name: "Jane", age: 18, profession: "Teacher", imageName: "jane3"),
+            User(name: "Kelly", age: 23, profession: "Music DJ", imageNames: ["kelly3"]),
+            User(name: "Jane", age: 18, profession: "Teacher", imageNames: ["jane3"]),
             Advertiser(title: "Avengers End Game", brandName: "Marvel", posterPhotoName: "avengers_endgame")
         ] as [ProducesCardViewModel]
         
