@@ -16,6 +16,13 @@ class CardView: UIView {
             imageView.image = UIImage(named: imageName)
             informationLabel.attributedText = cardViewModel.attributedString
             informationLabel.textAlignment = cardViewModel.textAlignment
+            
+            (0..<cardViewModel.imageNames.count).forEach { (_) in
+                let barView = UIView()
+                barView.backgroundColor = UIColor(white: 0, alpha: 0.1)
+                barsStackView.addArrangedSubview(barView)
+            }
+            barsStackView.arrangedSubviews.first?.backgroundColor = .white
         }
     }
     
@@ -122,13 +129,6 @@ class CardView: UIView {
         barsStackView.spacing = 4
         barsStackView.distribution = .fillEqually
         
-        // some dummy bars for now
-        (0..<4).forEach { (_) in
-            let barView = UIView()
-            barView.backgroundColor = UIColor(white: 0, alpha: 0.1)
-            barsStackView.addArrangedSubview(barView)
-        }
-        barsStackView.arrangedSubviews.first?.backgroundColor = .white
     }
     
     override func layoutSubviews() {
