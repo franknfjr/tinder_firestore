@@ -23,6 +23,7 @@ class CardView: UIView {
     fileprivate let informationLabel = UILabel()
     fileprivate let threshold: CGFloat = 80
     fileprivate let gradientLayer = CAGradientLayer()
+    fileprivate let barsStackView = UIStackView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,6 +46,8 @@ class CardView: UIView {
         addSubview(imageView)
         imageView.fillSuperview()
         
+        setupBarsStackView()
+
         setupGradientLayer()
         
         addSubview(informationLabel)
@@ -110,6 +113,22 @@ class CardView: UIView {
         gradientLayer.locations = [0.5, 1.1]
         
         layer.addSublayer(gradientLayer)
+    }
+    
+    fileprivate func setupBarsStackView() {
+        addSubview(barsStackView)
+        
+        barsStackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 8, left: 0, bottom: 0, right: 8), size: .init(width: 0, height: 4))
+        barsStackView.spacing = 4
+        barsStackView.distribution = .fillEqually
+        
+        // some dummy bars for now
+        (0..<4).forEach { (_) in
+            let barView = UIView()
+            barView.backgroundColor = UIColor(white: 0, alpha: 0.1)
+            barsStackView.addArrangedSubview(barView)
+        }
+        barsStackView.arrangedSubviews.first?.backgroundColor = .white
     }
     
     override func layoutSubviews() {
