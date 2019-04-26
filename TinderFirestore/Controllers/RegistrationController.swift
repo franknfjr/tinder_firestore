@@ -64,8 +64,13 @@ class RegistrationController: UIViewController {
         super.viewDidLoad()
         
         setupGradientLayer()
-        view.backgroundColor = .red
         
+        setupLayout()
+    }
+    
+    // MARK:- Private
+    
+    fileprivate func setupLayout() {
         let stackView = UIStackView(arrangedSubviews: [selectPhotoButton, fullNameTextField, emailTextField, passwordextField, registerButton])
         
         view.addSubview(stackView)
