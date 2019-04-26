@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB01D32D227324B80038064F /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01D32C227324B80038064F /* CustomTextField.swift */; };
 		BB01D781226DEC58004FCB5C /* HomeBottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01D780226DEC58004FCB5C /* HomeBottomControlsStackView.swift */; };
 		BB01D783226DF3D4004FCB5C /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01D782226DF3D4004FCB5C /* TopNavigationStackView.swift */; };
 		BB01D785226DFC8A004FCB5C /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01D784226DFC8A004FCB5C /* CardView.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BB01D32C227324B80038064F /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		BB01D780226DEC58004FCB5C /* HomeBottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlsStackView.swift; sourceTree = "<group>"; };
 		BB01D782226DF3D4004FCB5C /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 		BB01D784226DFC8A004FCB5C /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 			children = (
 				BB05EF42226CA68F002BB5C8 /* HomeController.swift */,
 				BBA20C0F227297FD007C41A3 /* RegistrationController.swift */,
+				BB01D32C227324B80038064F /* CustomTextField.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB05EF43226CA68F002BB5C8 /* HomeController.swift in Sources */,
+				BB01D32D227324B80038064F /* CustomTextField.swift in Sources */,
 				BB01D781226DEC58004FCB5C /* HomeBottomControlsStackView.swift in Sources */,
 				BB828739226F34C00080C2BD /* Advertiser.swift in Sources */,
 				BB05EF54226CA9FB002BB5C8 /* Extensions.swift in Sources */,
