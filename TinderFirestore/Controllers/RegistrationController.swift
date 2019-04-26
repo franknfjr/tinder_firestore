@@ -47,13 +47,26 @@ class RegistrationController: UIViewController {
         return tf
     }()
     
+    let registerButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Register", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+        button.backgroundColor = #colorLiteral(red: 0.8132490516, green: 0.09731306881, blue: 0.3328936398, alpha: 1)
+        
+        button.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        button.layer.cornerRadius = 22
+        return button
+        
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupGradientLayer()
         view.backgroundColor = .red
         
-        let stackView = UIStackView(arrangedSubviews: [selectPhotoButton, fullNameTextField, emailTextField, passwordextField])
+        let stackView = UIStackView(arrangedSubviews: [selectPhotoButton, fullNameTextField, emailTextField, passwordextField, registerButton])
         
         view.addSubview(stackView)
         
