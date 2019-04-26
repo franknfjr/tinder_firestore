@@ -37,6 +37,7 @@ class RegistrationController: UIViewController {
         
         return tf
     }()
+    
     let passwordextField: CustomTextField = {
         let tf = CustomTextField(padding: 24)
         tf.placeholder = "Enter password"
@@ -49,6 +50,7 @@ class RegistrationController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupGradientLayer()
         view.backgroundColor = .red
         
         let stackView = UIStackView(arrangedSubviews: [selectPhotoButton, fullNameTextField, emailTextField, passwordextField])
@@ -61,5 +63,16 @@ class RegistrationController: UIViewController {
         stackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
         
         stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    }
+    
+    fileprivate func setupGradientLayer() {
+        let gradientLayer = CAGradientLayer()
+        let topColor = #colorLiteral(red: 0.9893679023, green: 0.3686453104, blue: 0.3786475658, alpha: 1)
+        let bottomColor = #colorLiteral(red: 0.8971359134, green: 0.1123924479, blue: 0.4676757455, alpha: 1)
+        gradientLayer.colors = [topColor.cgColor, bottomColor.cgColor]
+        gradientLayer.locations = [0, 1]
+        
+        view.layer.addSublayer(gradientLayer)
+        gradientLayer.frame = view.bounds
     }
 }
