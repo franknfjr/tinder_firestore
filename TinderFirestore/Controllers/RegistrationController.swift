@@ -20,7 +20,7 @@ class RegistrationController: UIViewController {
         button.layer.cornerRadius = 16
         return button
     }()
-        
+    
     let fullNameTextField: CustomTextField = {
         let tf = CustomTextField(padding: 24)
         tf.placeholder = "Enter full name"
@@ -71,9 +71,9 @@ class RegistrationController: UIViewController {
     
     // MARK:- Private
     private let gradientLayer = CAGradientLayer()
-
+    
     lazy var verticalStackView: UIStackView = {
-       let sv = UIStackView(arrangedSubviews: [fullNameTextField, emailTextField, passwordTextField, registerButton ])
+        let sv = UIStackView(arrangedSubviews: [fullNameTextField, emailTextField, passwordTextField, registerButton ])
         
         sv.axis = .vertical
         sv.distribution = .fillEqually
