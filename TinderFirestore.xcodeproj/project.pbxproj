@@ -11,6 +11,7 @@
 		BB01D781226DEC58004FCB5C /* HomeBottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01D780226DEC58004FCB5C /* HomeBottomControlsStackView.swift */; };
 		BB01D783226DF3D4004FCB5C /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01D782226DF3D4004FCB5C /* TopNavigationStackView.swift */; };
 		BB01D785226DFC8A004FCB5C /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01D784226DFC8A004FCB5C /* CardView.swift */; };
+		BB04708D2273E5090042FAF1 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB04708C2273E5090042FAF1 /* RegistrationViewModel.swift */; };
 		BB05EF41226CA68F002BB5C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05EF40226CA68F002BB5C8 /* AppDelegate.swift */; };
 		BB05EF43226CA68F002BB5C8 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05EF42226CA68F002BB5C8 /* HomeController.swift */; };
 		BB05EF46226CA68F002BB5C8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB05EF44226CA68F002BB5C8 /* Main.storyboard */; };
@@ -28,6 +29,7 @@
 		BB01D780226DEC58004FCB5C /* HomeBottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlsStackView.swift; sourceTree = "<group>"; };
 		BB01D782226DF3D4004FCB5C /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 		BB01D784226DFC8A004FCB5C /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		BB04708C2273E5090042FAF1 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		BB05EF3D226CA68F002BB5C8 /* TinderFirestore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderFirestore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB05EF40226CA68F002BB5C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB05EF42226CA68F002BB5C8 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				BB05EF42226CA68F002BB5C8 /* HomeController.swift */,
 				BBA20C0F227297FD007C41A3 /* RegistrationController.swift */,
 				BB01D32C227324B80038064F /* CustomTextField.swift */,
+				BB04708C2273E5090042FAF1 /* RegistrationViewModel.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -203,6 +206,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB05EF43226CA68F002BB5C8 /* HomeController.swift in Sources */,
+				BB04708D2273E5090042FAF1 /* RegistrationViewModel.swift in Sources */,
 				BB01D32D227324B80038064F /* CustomTextField.swift in Sources */,
 				BB01D781226DEC58004FCB5C /* HomeBottomControlsStackView.swift in Sources */,
 				BB828739226F34C00080C2BD /* Advertiser.swift in Sources */,

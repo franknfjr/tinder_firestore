@@ -43,7 +43,7 @@ class RegistrationController: UIViewController {
         tf.placeholder = "Enter password"
         tf.isSecureTextEntry = true
         tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
-
+        
         return tf
     }()
     
@@ -71,31 +71,38 @@ class RegistrationController: UIViewController {
         setupNotificationObservers()
         
         setupTapGesture()
+        
+        setupRegistrationViewModelObserver()
     }
     
     // MARK:- Private
     private let gradientLayer = CAGradientLayer()
+    private let registrationViewModel = RegistrationViewModel()
+    
+    fileprivate func setupRegistrationViewModelObserver() {
+        registrationViewModel.isFormValidObserver = { (isFormValid) in
+            print("Form is changing, is it valid?", isFormValid)
+                
+            self.registerButton.isEnabled = isFormValid
+            
+            if isFormValid {
+                self.registerButton.backgroundColor = #colorLiteral(red: 0.8132490516, green: 0.09731306881, blue: 0.3328936398, alpha: 1)
+                self.registerButton.setTitleColor(.white, for: .normal)
+            } else {
+                self.registerButton.backgroundColor = .lightGray
+                self.registerButton.setTitleColor(.gray, for: .normal)
+            }
+        }
+    }
     
     @objc fileprivate func handleTextChange(textField: UITextView) {
         if textField == fullNameTextField {
-            print("FULL NAME")
+            registrationViewModel.fullName = textField.text
         } else if textField == emailTextField {
-            print("EMAIL")
+            registrationViewModel.email = textField.text
         } else {
-         print("PASSWORD")
+            registrationViewModel.password = textField.text
         }
-        
-        let isFormValid = fullNameTextField.text?.isEmpty == false && emailTextField.text?.isEmpty == false && passwordTextField.text?.isEmpty == false
-        registerButton.isEnabled = isFormValid
-
-        if isFormValid {
-            registerButton.backgroundColor = #colorLiteral(red: 0.8132490516, green: 0.09731306881, blue: 0.3328936398, alpha: 1)
-            registerButton.setTitleColor(.white, for: .normal)
-        } else {
-            registerButton.backgroundColor = .lightGray
-            registerButton.setTitleColor(.gray, for: .normal)
-        }
-        
     }
     
     lazy var verticalStackView: UIStackView = {
