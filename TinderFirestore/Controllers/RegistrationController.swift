@@ -10,16 +10,32 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
+extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[.originalImage] as? UIImage
+        self.selectPhotoButton.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        dismiss(animated: true, completion: nil)
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true)
+    }
+}
+
 class RegistrationController: UIViewController {
     
     let selectPhotoButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.setTitle("Select Photo", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 32, weight: .heavy)
         button.backgroundColor = .white
         button.setTitleColor(.black, for: .normal)
         button.heightAnchor.constraint(equalToConstant: 270).isActive = true
         button.layer.cornerRadius = 16
+        button.imageView?.contentMode = .scaleAspectFill
+        button.clipsToBounds = true
+        button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
+        
         return button
     }()
     
@@ -108,10 +124,16 @@ class RegistrationController: UIViewController {
         hud.dismiss(afterDelay: 3)
     }
     
+    @objc fileprivate func handleSelectPhoto() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.delegate = self
+        present(imagePickerController, animated: true)
+    }
+    
     fileprivate func setupRegistrationViewModelObserver() {
         registrationViewModel.isFormValidObserver = { (isFormValid) in
             print("Form is changing, is it valid?", isFormValid)
-                
+            
             self.registerButton.isEnabled = isFormValid
             
             if isFormValid {
