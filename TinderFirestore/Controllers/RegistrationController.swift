@@ -14,7 +14,7 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.originalImage] as? UIImage
-        registrationViewModel.image = image
+        registrationViewModel.bindableImage.value = image
         
         dismiss(animated: true, completion: nil)
     }
@@ -146,7 +146,7 @@ class RegistrationController: UIViewController {
             }
         }
         
-        registrationViewModel.imageObserver = { [unowned self] img in
+        registrationViewModel.bindableImage.bind { [unowned self] (img) in
             self.selectPhotoButton.setImage(img?.withRenderingMode(.alwaysOriginal), for: .normal)
             
         }
