@@ -23,10 +23,10 @@ class RegistrationViewModel {
     fileprivate func checkFormValidity() {
         let ifFormValid = fullName?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false
         
-        isFormValidObserver?(ifFormValid)
+        bindableisFormValid.value = ifFormValid
     }
     
     //Reactive programming
-    var isFormValidObserver: ((Bool) -> ())?
+    var bindableisFormValid = Bindable<Bool>()
     
 }

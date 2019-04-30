@@ -132,8 +132,9 @@ class RegistrationController: UIViewController {
     }
     
     fileprivate func setupRegistrationViewModelObserver() {
-        registrationViewModel.isFormValidObserver = { (isFormValid) in
-            print("Form is changing, is it valid?", isFormValid)
+        registrationViewModel.bindableisFormValid.bind { [unowned self] (isFormValid) in
+            
+            guard let isFormValid = isFormValid else { return }
             
             self.registerButton.isEnabled = isFormValid
             
