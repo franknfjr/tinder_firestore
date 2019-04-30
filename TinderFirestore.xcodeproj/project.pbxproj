@@ -11,6 +11,7 @@
 		BB01D781226DEC58004FCB5C /* HomeBottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01D780226DEC58004FCB5C /* HomeBottomControlsStackView.swift */; };
 		BB01D783226DF3D4004FCB5C /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01D782226DF3D4004FCB5C /* TopNavigationStackView.swift */; };
 		BB01D785226DFC8A004FCB5C /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01D784226DFC8A004FCB5C /* CardView.swift */; };
+		BB035DAF22786CB70055F46E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB035DAE22786CB70055F46E /* GoogleService-Info.plist */; };
 		BB04708D2273E5090042FAF1 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB04708C2273E5090042FAF1 /* RegistrationViewModel.swift */; };
 		BB05EF41226CA68F002BB5C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05EF40226CA68F002BB5C8 /* AppDelegate.swift */; };
 		BB05EF43226CA68F002BB5C8 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05EF42226CA68F002BB5C8 /* HomeController.swift */; };
@@ -22,13 +23,17 @@
 		BB828737226F2E8B0080C2BD /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB828736226F2E8B0080C2BD /* CardViewModel.swift */; };
 		BB828739226F34C00080C2BD /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB828738226F34C00080C2BD /* Advertiser.swift */; };
 		BBA20C10227297FD007C41A3 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA20C0F227297FD007C41A3 /* RegistrationController.swift */; };
+		FD542CDF07E1490C826267BA /* Pods_TinderFirestore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE33B7FCA6BA4FB78A2EEE8E /* Pods_TinderFirestore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4E0A2D138FBB13C7E5F8C4FC /* Pods-TinderFirestore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderFirestore.debug.xcconfig"; path = "Target Support Files/Pods-TinderFirestore/Pods-TinderFirestore.debug.xcconfig"; sourceTree = "<group>"; };
+		5403E03C69C111256385F42B /* Pods-TinderFirestore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TinderFirestore.release.xcconfig"; path = "Target Support Files/Pods-TinderFirestore/Pods-TinderFirestore.release.xcconfig"; sourceTree = "<group>"; };
 		BB01D32C227324B80038064F /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		BB01D780226DEC58004FCB5C /* HomeBottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlsStackView.swift; sourceTree = "<group>"; };
 		BB01D782226DF3D4004FCB5C /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 		BB01D784226DFC8A004FCB5C /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		BB035DAE22786CB70055F46E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BB04708C2273E5090042FAF1 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		BB05EF3D226CA68F002BB5C8 /* TinderFirestore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderFirestore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB05EF40226CA68F002BB5C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -42,6 +47,7 @@
 		BB828736226F2E8B0080C2BD /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		BB828738226F34C00080C2BD /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
 		BBA20C0F227297FD007C41A3 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
+		FE33B7FCA6BA4FB78A2EEE8E /* Pods_TinderFirestore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinderFirestore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,12 +55,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD542CDF07E1490C826267BA /* Pods_TinderFirestore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B330BFA9BF2EEB0C48FB3DF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FE33B7FCA6BA4FB78A2EEE8E /* Pods_TinderFirestore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AA260CA7DFDFBE18FE957B66 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4E0A2D138FBB13C7E5F8C4FC /* Pods-TinderFirestore.debug.xcconfig */,
+				5403E03C69C111256385F42B /* Pods-TinderFirestore.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		BB01D77F226DEC1F004FCB5C /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -70,6 +94,8 @@
 			children = (
 				BB05EF3F226CA68F002BB5C8 /* TinderFirestore */,
 				BB05EF3E226CA68F002BB5C8 /* Products */,
+				AA260CA7DFDFBE18FE957B66 /* Pods */,
+				3B330BFA9BF2EEB0C48FB3DF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,6 +120,7 @@
 				BB05EF47226CA691002BB5C8 /* Assets.xcassets */,
 				BB05EF49226CA691002BB5C8 /* LaunchScreen.storyboard */,
 				BB05EF4C226CA691002BB5C8 /* Info.plist */,
+				BB035DAE22786CB70055F46E /* GoogleService-Info.plist */,
 			);
 			path = TinderFirestore;
 			sourceTree = "<group>";
@@ -141,9 +168,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BB05EF4F226CA691002BB5C8 /* Build configuration list for PBXNativeTarget "TinderFirestore" */;
 			buildPhases = (
+				9606A79CBBE2A86EC7D9299D /* [CP] Check Pods Manifest.lock */,
 				BB05EF39226CA68F002BB5C8 /* Sources */,
 				BB05EF3A226CA68F002BB5C8 /* Frameworks */,
 				BB05EF3B226CA68F002BB5C8 /* Resources */,
+				6FB583ED742D8753720702F2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -194,11 +223,83 @@
 			files = (
 				BB05EF4B226CA691002BB5C8 /* LaunchScreen.storyboard in Resources */,
 				BB05EF48226CA691002BB5C8 /* Assets.xcassets in Resources */,
+				BB035DAF22786CB70055F46E /* GoogleService-Info.plist in Resources */,
 				BB05EF46226CA68F002BB5C8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6FB583ED742D8753720702F2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TinderFirestore/Pods-TinderFirestore-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BoringSSL-GRPC/openssl_grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-ProtoRPC/ProtoRPC.framework",
+				"${BUILT_PRODUCTS_DIR}/gRPC-RxLibrary/RxLibrary.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl_grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JGProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ProtoRPC.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxLibrary.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TinderFirestore/Pods-TinderFirestore-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9606A79CBBE2A86EC7D9299D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TinderFirestore-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		BB05EF39226CA68F002BB5C8 /* Sources */ = {
@@ -360,6 +461,7 @@
 		};
 		BB05EF50226CA691002BB5C8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4E0A2D138FBB13C7E5F8C4FC /* Pods-TinderFirestore.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -378,6 +480,7 @@
 		};
 		BB05EF51226CA691002BB5C8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5403E03C69C111256385F42B /* Pods-TinderFirestore.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
