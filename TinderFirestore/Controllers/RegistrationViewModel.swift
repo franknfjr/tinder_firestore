@@ -10,6 +10,7 @@ import UIKit
 
 class RegistrationViewModel {
     
+    var bindableIsRegistering = Bindable<Bool>()
     var bindableImage = Bindable<UIImage>()
     
     var fullName: String? {

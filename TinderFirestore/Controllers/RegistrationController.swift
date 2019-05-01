@@ -107,8 +107,7 @@ class RegistrationController: UIViewController {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         
-        registeringHUD.textLabel.text = "Register"
-        registeringHUD.show(in: view)
+        registrationViewModel.bindableIsRegistering.value = true
         
         Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
             if let err = err {
@@ -137,7 +136,7 @@ class RegistrationController: UIViewController {
                         return
                     }
                     
-                    self.registeringHUD.dismiss()
+                    self.registrationViewModel.bindableIsRegistering.value = false
                     print("Download url of our image is:", url?.absoluteString ?? "")
 
                 })
@@ -179,6 +178,15 @@ class RegistrationController: UIViewController {
         registrationViewModel.bindableImage.bind { [unowned self] (img) in
             self.selectPhotoButton.setImage(img?.withRenderingMode(.alwaysOriginal), for: .normal)
             
+        }
+        
+        registrationViewModel.bindableIsRegistering.bind { [unowned self] (isRegistering) in
+            if isRegistering == true {
+                self.registeringHUD.textLabel.text = "Register"
+                self.registeringHUD.show(in: self.view)
+            } else {
+                self.registeringHUD.dismiss()
+            }
         }
     }
     
