@@ -99,12 +99,16 @@ class RegistrationController: UIViewController {
     // MARK:- Private
     private let gradientLayer = CAGradientLayer()
     private let registrationViewModel = RegistrationViewModel()
+    private let registeringHUD = JGProgressHUD(style: .dark)
     
     
     @objc fileprivate func handleRegister() {
         self.handleTapDismiss()
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
+        
+        registeringHUD.textLabel.text = "Register"
+        registeringHUD.show(in: view)
         
         Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
             if let err = err {
@@ -114,10 +118,35 @@ class RegistrationController: UIViewController {
             }
             
             print("Successfully registered user:", res?.user.uid ?? "")
+            
+            let filename = UUID().uuidString
+            let ref_image = Storage.storage().reference(withPath: "/images/\(filename)")
+            let imageData = self.registrationViewModel.bindableImage.value?.jpegData(compressionQuality: 0.75) ?? Data()
+            
+            ref_image.putData(imageData, metadata: nil, completion: { (_, err) in
+                if let err = err {
+                    self.showHUDWithError(error: err)
+                    return
+                }
+                
+                print("Finished uploading image to Storage")
+                
+                ref_image.downloadURL(completion: { (url, err) in
+                    if let err = err {
+                        self.showHUDWithError(error: err)
+                        return
+                    }
+                    
+                    self.registeringHUD.dismiss()
+                    print("Download url of our image is:", url?.absoluteString ?? "")
+
+                })
+            })
         }
     }
     
     fileprivate func showHUDWithError(error: Error) {
+        registeringHUD.dismiss()
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Failed registration"
         hud.detailTextLabel.text = error.localizedDescription
@@ -181,7 +210,6 @@ class RegistrationController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
