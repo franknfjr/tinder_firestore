@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class RegistrationViewModel {
     
@@ -18,6 +19,7 @@ class RegistrationViewModel {
             checkFormValidity()
         }
     }
+    
     var email: String? { didSet { checkFormValidity() }}
     var password: String? { didSet { checkFormValidity() }}
     
@@ -25,6 +27,45 @@ class RegistrationViewModel {
         let ifFormValid = fullName?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false
         
         bindableisFormValid.value = ifFormValid
+    }
+    
+    func performRegistration(completion: @escaping (Error?) -> ()) {
+        guard let email = email, let password = password else { return }
+        bindableIsRegistering.value = true
+        Auth.auth().createUser(withEmail: email, password: password) { (res, err) in
+            
+            if let err = err {
+                print(err)
+                completion(err)
+                return
+            }
+            
+            print("Successfully registered user:", res?.user.uid ?? "")
+            
+            let filename = UUID().uuidString
+            let ref_image = Storage.storage().reference(withPath: "/images/\(filename)")
+            let imageData = self.bindableImage.value?.jpegData(compressionQuality: 0.75) ?? Data()
+            
+            ref_image.putData(imageData, metadata: nil, completion: { (_, err) in
+                if let err = err {
+                    completion(err)
+                    return
+                }
+                
+                print("Finished uploading image to Storage")
+                
+                ref_image.downloadURL(completion: { (url, err) in
+                    if let err = err {
+                        completion(err)
+                        return
+                    }
+                    
+                    self.bindableIsRegistering.value = false
+                    print("Download url of our image is:", url?.absoluteString ?? "")
+                    
+                })
+            })
+        }
     }
     
     //Reactive programming
