@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class HomeController: UIViewController {
     
@@ -14,16 +15,18 @@ class HomeController: UIViewController {
     let cardsDeckView = UIView()
     let buttonStackView = HomeBottomControlsStackView()
     
-    let cardViewModels: [CardViewModel] = {
-        let producers = [
-            User(name: "Kelly", age: 23, profession: "Music DJ", imageNames: ["kelly1","kelly2","kelly3"]),
-            User(name: "Jane", age: 18, profession: "Teacher", imageNames: ["jane1","jane2","jane3"]),
-            Advertiser(title: "Avengers End Game", brandName: "Marvel", posterPhotoName: "avengers_endgame")
-        ] as [ProducesCardViewModel]
-        
-        let viewModels = producers.map({return $0.toCardViewModel()})
-        return viewModels
-    }()
+//    let cardViewModels: [CardViewModel] = {
+//        let producers = [
+//            User(name: "Kelly", age: 23, profession: "Music DJ", imageNames: ["kelly1","kelly2","kelly3"]),
+//            User(name: "Jane", age: 18, profession: "Teacher", imageNames: ["jane1","jane2","jane3"]),
+//            Advertiser(title: "Avengers End Game", brandName: "Marvel", posterPhotoName: "avengers_endgame")
+//        ] as [ProducesCardViewModel]
+//
+//        let viewModels = producers.map({return $0.toCardViewModel()})
+//        return viewModels
+//    }()
+    
+    var cardViewModels = [CardViewModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,9 +35,28 @@ class HomeController: UIViewController {
         setupLayout()
         
         setupDummyCards()
+        
+        fetchUsersFromFirestore()
     }
     
     //MARK:- Fileprivate
+    
+    fileprivate func fetchUsersFromFirestore() {
+        Firestore.firestore().collection("users").getDocuments { (snapshot, err) in
+            if let err = err {
+                print("Faild to fetch users:", err)
+                return
+            }
+            
+            snapshot?.documents.forEach({ (documentSnapshot) in
+                let userDictionary = documentSnapshot.data()
+                let user = User(dictionary: userDictionary)
+                self.cardViewModels.append(user.toCardViewModel())
+            })
+            
+            self.setupDummyCards()
+        }
+    }
     
     @objc fileprivate func handleSettings() {
         let registrationController = RegistrationController()
@@ -43,6 +65,7 @@ class HomeController: UIViewController {
     }
     
     fileprivate func setupLayout() {
+        view.backgroundColor = .white
         let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardsDeckView, buttonStackView])
         overallStackView.axis = .vertical
         

@@ -7,13 +7,17 @@
 //
 
 import UIKit
+import SDWebImage
 
 class CardView: UIView {
     
     var cardViewModel: CardViewModel! {
         didSet {
             let imageName = cardViewModel.imageNames.first ?? ""
-            imageView.image = UIImage(named: imageName)
+            if let url = URL(string: imageName) {
+                imageView.sd_setImage(with: url)
+            }
+            
             informationLabel.attributedText = cardViewModel.attributedString
             informationLabel.textAlignment = cardViewModel.textAlignment
             
@@ -34,7 +38,7 @@ class CardView: UIView {
     fileprivate let gradientLayer = CAGradientLayer()
     fileprivate let barsStackView = UIStackView()
     fileprivate let barDeselectedColor = UIColor(white: 0, alpha: 0.1)
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -84,7 +88,7 @@ class CardView: UIView {
         imageView.fillSuperview()
         
         setupBarsStackView()
-
+        
         setupGradientLayer()
         
         addSubview(informationLabel)
