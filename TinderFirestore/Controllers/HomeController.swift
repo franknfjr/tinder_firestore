@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import JGProgressHUD
 
 class HomeController: UIViewController {
     
@@ -38,11 +39,14 @@ class HomeController: UIViewController {
     }
     
     fileprivate func fetchUsersFromFirestore() {
-        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Fetching Users"
+        hud.show(in: view)
         
         let query = Firestore.firestore().collection("users").order(by: "uid").start(after: [lastFetchUser?.uid ?? ""]).limit(to: 2)
         
         query.getDocuments { (snapshot, err) in
+            hud.dismiss()
             if let err = err {
                 print("Faild to fetch users:", err)
                 return
