@@ -17,12 +17,12 @@ struct User: ProducesCardViewModel {
     var imageUrl1: String?
     
     init(dictionary: [String: Any]) {
-        self.uid = dictionary["uid"] as? String ?? ""
-        self.name = dictionary["fullName"] as? String ?? ""
+        // we'll initialize our users here
         self.age = dictionary["age"] as? Int
-        self.profession = dictionary["profession"] as? String ?? ""
+        self.profession = dictionary["profession"] as? String
+        self.name = dictionary["fullName"] as? String ?? ""
         self.imageUrl1 = dictionary["imageUrl1"] as? String ?? ""
-
+        self.uid = dictionary["uid"] as? String ?? ""
     }
     
     func toCardViewModel() -> CardViewModel {

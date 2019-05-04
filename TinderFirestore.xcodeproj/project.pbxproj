@@ -14,6 +14,7 @@
 		BB035DAF22786CB70055F46E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB035DAE22786CB70055F46E /* GoogleService-Info.plist */; };
 		BB035DB122787B5C0055F46E /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB035DB022787B5C0055F46E /* Bindable.swift */; };
 		BB04708D2273E5090042FAF1 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB04708C2273E5090042FAF1 /* RegistrationViewModel.swift */; };
+		BB05C423227DBC5400B7B165 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05C422227DBC5400B7B165 /* SettingsCell.swift */; };
 		BB05EF41226CA68F002BB5C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05EF40226CA68F002BB5C8 /* AppDelegate.swift */; };
 		BB05EF43226CA68F002BB5C8 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05EF42226CA68F002BB5C8 /* HomeController.swift */; };
 		BB05EF46226CA68F002BB5C8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB05EF44226CA68F002BB5C8 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 		BB035DAE22786CB70055F46E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BB035DB022787B5C0055F46E /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		BB04708C2273E5090042FAF1 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
+		BB05C422227DBC5400B7B165 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		BB05EF3D226CA68F002BB5C8 /* TinderFirestore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderFirestore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB05EF40226CA68F002BB5C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BB05EF42226CA68F002BB5C8 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				BB01D780226DEC58004FCB5C /* HomeBottomControlsStackView.swift */,
 				BB01D782226DF3D4004FCB5C /* TopNavigationStackView.swift */,
 				BB01D784226DFC8A004FCB5C /* CardView.swift */,
+				BB05C422227DBC5400B7B165 /* SettingsCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 				BB01D783226DF3D4004FCB5C /* TopNavigationStackView.swift in Sources */,
 				BB0632DF226EAC06006E647A /* User.swift in Sources */,
 				BBA20C10227297FD007C41A3 /* RegistrationController.swift in Sources */,
+				BB05C423227DBC5400B7B165 /* SettingsCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
