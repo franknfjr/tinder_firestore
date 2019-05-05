@@ -69,7 +69,6 @@ class CardView: UIView {
     
     fileprivate func setupImageIndexObserver() {
         cardViewModel.imageIndexObserver = { [weak self] (index, imageUrl) in
-            print("fom")
             if let url = URL(string: imageUrl ?? "") {
                 self?.imageView.sd_setImage(with: url)
                 
