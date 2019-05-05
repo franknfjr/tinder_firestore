@@ -14,6 +14,7 @@
 		BB035DAF22786CB70055F46E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB035DAE22786CB70055F46E /* GoogleService-Info.plist */; };
 		BB035DB122787B5C0055F46E /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB035DB022787B5C0055F46E /* Bindable.swift */; };
 		BB04708D2273E5090042FAF1 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB04708C2273E5090042FAF1 /* RegistrationViewModel.swift */; };
+		BB051746227F62B70058190A /* AgeRangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB051745227F62B70058190A /* AgeRangeCell.swift */; };
 		BB05C423227DBC5400B7B165 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05C422227DBC5400B7B165 /* SettingsCell.swift */; };
 		BB05EF41226CA68F002BB5C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05EF40226CA68F002BB5C8 /* AppDelegate.swift */; };
 		BB05EF43226CA68F002BB5C8 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB05EF42226CA68F002BB5C8 /* HomeController.swift */; };
@@ -39,6 +40,7 @@
 		BB035DAE22786CB70055F46E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BB035DB022787B5C0055F46E /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
 		BB04708C2273E5090042FAF1 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
+		BB051745227F62B70058190A /* AgeRangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeRangeCell.swift; sourceTree = "<group>"; };
 		BB05C422227DBC5400B7B165 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		BB05EF3D226CA68F002BB5C8 /* TinderFirestore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TinderFirestore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB05EF40226CA68F002BB5C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				BB01D782226DF3D4004FCB5C /* TopNavigationStackView.swift */,
 				BB01D784226DFC8A004FCB5C /* CardView.swift */,
 				BB05C422227DBC5400B7B165 /* SettingsCell.swift */,
+				BB051745227F62B70058190A /* AgeRangeCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				BB01D781226DEC58004FCB5C /* HomeBottomControlsStackView.swift in Sources */,
 				BB828739226F34C00080C2BD /* Advertiser.swift in Sources */,
 				BB05EF54226CA9FB002BB5C8 /* Extensions.swift in Sources */,
+				BB051746227F62B70058190A /* AgeRangeCell.swift in Sources */,
 				BB05EF41226CA68F002BB5C8 /* AppDelegate.swift in Sources */,
 				BB828737226F2E8B0080C2BD /* CardViewModel.swift in Sources */,
 				BB01D785226DFC8A004FCB5C /* CardView.swift in Sources */,
