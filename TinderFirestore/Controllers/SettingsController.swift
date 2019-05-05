@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Firebase
+import JGProgressHUD
+import SDWebImage
 
 class SettingsController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -24,8 +27,12 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
     
     func createButton(selector: Selector) -> UIButton {
         let button = UIButton(type: .system)
-        button.setTitle("select photo", for: .normal)
+        button.setTitle("Select Photo", for: .normal)
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 8
+        button.clipsToBounds = true
         button.addTarget(self, action: selector, for: .touchUpInside)
+        button.imageView?.contentMode = .scaleAspectFill
         return button
     }
     
@@ -37,6 +44,36 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .interactive
         
+        fetchCurrentUser()
+        
+    }
+    
+    var user: User?
+    
+    fileprivate func fetchCurrentUser() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        Firestore.firestore().collection("users").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print(err)
+                return
+            }
+            
+            // fetched our user here
+            guard let dictionary = snapshot?.data() else { return }
+            self.user = User(dictionary: dictionary)
+            self.loadUserPhotos()
+            
+            self.tableView.reloadData()
+        }
+        
+    }
+    
+    fileprivate func loadUserPhotos() {
+        guard let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl) else { return }
+        SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+            self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
     }
     
     lazy var header: UIView = {
@@ -109,10 +146,15 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         switch indexPath.section {
         case 1:
             cell.textField.placeholder = "Enter Name"
+            cell.textField.text = user?.name
         case 2:
             cell.textField.placeholder = "Enter Profession"
+            cell.textField.text = user?.profession
         case 3:
             cell.textField.placeholder = "Enter Age"
+            if let age = user?.age {
+                cell.textField.text = String(age)
+            }
         default:
             cell.textField.placeholder = "Enter Bio"
         }
