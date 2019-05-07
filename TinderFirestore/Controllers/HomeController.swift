@@ -62,7 +62,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 self.hud.dismiss()
                 return
             }
-            self.hud.dismiss()
             self.user = user
             self.fetchUsersFromFirestore()
         }
