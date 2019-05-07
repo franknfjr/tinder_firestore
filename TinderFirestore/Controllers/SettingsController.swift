@@ -109,15 +109,14 @@ class SettingsController: UITableViewController {
     var user: User?
     
     fileprivate func fetchCurrentUser() {
-        UserService.shared.fetchCurrentUser { (result) in
-            switch result {
-            case .success(let user):
-                self.user = user
-                self.loadUserPhotos()
-                self.tableView.reloadData()
-            case .failure(let error):
-                print(error)
+        Firestore.firestore().fetchCurrentUser { (user, err) in
+            if let err = err {
+                print("Failed to fetch user:", err)
+                return
             }
+            self.user = user
+            self.loadUserPhotos()
+            self.tableView.reloadData()
         }
     }
     

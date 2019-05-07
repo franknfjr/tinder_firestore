@@ -41,7 +41,7 @@ class RegistrationController: UIViewController {
     }()
     
     let fullNameTextField: CustomTextField = {
-        let tf = CustomTextField(padding: 24)
+        let tf = CustomTextField(padding: 24, height: 50)
         tf.placeholder = "Enter full name"
         tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
         
@@ -49,7 +49,7 @@ class RegistrationController: UIViewController {
     }()
     
     let emailTextField: CustomTextField = {
-        let tf = CustomTextField(padding: 24)
+        let tf = CustomTextField(padding: 24, height: 50)
         tf.placeholder = "Enter email"
         tf.keyboardType = .emailAddress
         tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
@@ -58,7 +58,7 @@ class RegistrationController: UIViewController {
     }()
     
     let passwordTextField: CustomTextField = {
-        let tf = CustomTextField(padding: 24)
+        let tf = CustomTextField(padding: 24, height: 50)
         tf.placeholder = "Enter password"
         tf.isSecureTextEntry = true
         tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
@@ -87,6 +87,8 @@ class RegistrationController: UIViewController {
         button.setTitle("Go to Login", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+        button.addTarget(self, action: #selector(handleGoToLogin), for: .touchUpInside)
+        
         return button
     }()
     
@@ -123,6 +125,11 @@ class RegistrationController: UIViewController {
             
             print("Finished registering our user")
         }
+    }
+    
+    @objc fileprivate func handleGoToLogin() {
+        let loginController = LoginController()
+        navigationController?.pushViewController(loginController, animated: true)
     }
     
     fileprivate func showHUDWithError(error: Error) {

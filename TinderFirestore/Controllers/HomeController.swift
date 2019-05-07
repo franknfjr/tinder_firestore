@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import JGProgressHUD
 
-class HomeController: UIViewController, SettingsControllerDelegate {
+class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate {
     
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
@@ -37,13 +37,17 @@ class HomeController: UIViewController, SettingsControllerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        // you want to kick the user out when they log out
         if Auth.auth().currentUser == nil {
-            let registrationController = RegistrationController()
-            let navController = UINavigationController(rootViewController: registrationController)
-            
+            let loginController = LoginController()
+            loginController.delegate = self
+            let navController = UINavigationController(rootViewController: loginController)
             present(navController, animated: true)
         }
+    }
+    
+    func didFinishLoggingIn() {
+        fetchCurrentUser()
     }
     
     //MARK:- Fileprivate
@@ -52,14 +56,14 @@ class HomeController: UIViewController, SettingsControllerDelegate {
         hud.show(in: view)
         cardsDeckView.subviews.forEach({$0.removeFromSuperview()})
         
-        UserService.shared.fetchCurrentUser { (result) in
-            switch result {
-            case .success(let user):
-                self.user = user
-                self.fetchUsersFromFirestore()
-            case .failure(let error):
-                print(error)
+        Firestore.firestore().fetchCurrentUser { (user, err) in
+            if let err = err {
+                print("Failed to fetch user:", err)
+                self.hud.dismiss()
+                return
             }
+            self.user = user
+            self.fetchUsersFromFirestore()
         }
     }
     
