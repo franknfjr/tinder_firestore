@@ -290,7 +290,7 @@ class SettingsController: UITableViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(handleSave)),
-            UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleCancel))
+            UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(handleLogout))
         ]
     }
     
@@ -329,6 +329,11 @@ class SettingsController: UITableViewController {
     }
     
     @objc fileprivate func handleCancel() {
+        dismiss(animated: true)
+    }
+    
+    @objc fileprivate func handleLogout() {
+        try? Auth.auth().signOut()
         dismiss(animated: true)
     }
 }

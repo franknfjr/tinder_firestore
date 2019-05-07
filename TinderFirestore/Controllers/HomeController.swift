@@ -32,11 +32,26 @@ class HomeController: UIViewController, SettingsControllerDelegate {
         setupLayout()
         
         fetchCurrentUser()
-
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if Auth.auth().currentUser == nil {
+            let registrationController = RegistrationController()
+            let navController = UINavigationController(rootViewController: registrationController)
+            
+            present(navController, animated: true)
+        }
     }
     
     //MARK:- Fileprivate
     fileprivate func fetchCurrentUser() {
+        hud.textLabel.text = "Loading"
+        hud.show(in: view)
+        cardsDeckView.subviews.forEach({$0.removeFromSuperview()})
+        
         UserService.shared.fetchCurrentUser { (result) in
             switch result {
             case .success(let user):
@@ -118,7 +133,7 @@ class HomeController: UIViewController, SettingsControllerDelegate {
     fileprivate func setupFirestoreUserCards() {
         cardViewModels.forEach { (cardVM) in
             let cardView = CardView(frame: .zero)
-
+            
             cardView.cardViewModel = cardVM
             cardsDeckView.addSubview(cardView)
             cardView.fillSuperview()
