@@ -24,15 +24,15 @@ class AgeRangeCell: UITableViewCell {
         return slider
     }()
     
-    let minLabel: UILabel = {
+    let minLabel : UILabel = {
         let label = AgeRangeLabel()
-        label.text = "Min 18"
+        label.text = "Min: 68"
         return label
     }()
     
-    let maxLabel: UILabel = {
+    let maxLabel : UILabel = {
         let label = AgeRangeLabel()
-        label.text = "Max 18"
+        label.text = "Max: 68"
         return label
     }()
     
@@ -41,17 +41,18 @@ class AgeRangeCell: UITableViewCell {
             return .init(width: 80, height: 0)
         }
     }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        let overallStackView = UIStackView(arrangedSubviews: [
+        let ovarallstackView = UIStackView(arrangedSubviews: [
             UIStackView(arrangedSubviews: [minLabel, minSlider]),
-            UIStackView(arrangedSubviews: [maxLabel, maxSlider])
-        ])
-        overallStackView.axis = .vertical
-        overallStackView.spacing = 16
-        addSubview(overallStackView)
-        overallStackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 16))
+            UIStackView(arrangedSubviews: [maxLabel, maxSlider])])
+        ovarallstackView.axis = .vertical
+        ovarallstackView.spacing = 16
+        ovarallstackView.distribution = .fillEqually
+        addSubview(ovarallstackView)
+        ovarallstackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 16))
     }
     
     required init?(coder aDecoder: NSCoder) {

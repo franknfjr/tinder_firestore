@@ -11,11 +11,64 @@ import Firebase
 import JGProgressHUD
 import SDWebImage
 
+protocol SettingsControllerDelegate {
+    func didSaveSettings()
+}
+
 class CustomImagePickerController: UIImagePickerController {
     var imageButton: UIButton?
 }
 
-class SettingsController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension SettingsController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let selectedImage = info[.originalImage] as? UIImage
+        let imageButton = (picker as? CustomImagePickerController)?.imageButton
+        imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
+        dismiss(animated: true)
+        
+        let filename = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
+        guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else { return }
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Uploading image..."
+        hud.show(in: view)
+        ref.putData(uploadData, metadata: nil) { (nil, err) in
+            if let err = err {
+                hud.dismiss()
+                print("Failed to upload image to storage: ", err)
+                return
+            }
+            
+            print("Finished uploading image")
+            ref.downloadURL(completion: { (url, err) in
+                
+                hud.dismiss()
+                
+                if let err = err {
+                    print("Failed to retrieve download URL: ", err)
+                }
+                
+                print("Finished getting downloading url: ", url?.absoluteString ?? "")
+                
+                if imageButton == self.image1Button {
+                    self.user?.imageUrl1 = url?.absoluteString
+                }else if imageButton == self.image2Button {
+                    self.user?.imageUrl2 = url?.absoluteString
+                }else {
+                    self.user?.imageUrl3 = url?.absoluteString
+                }
+                
+            })
+            
+        }
+    }
+}
+
+class SettingsController: UITableViewController {
+    
+    var delegate: SettingsControllerDelegate?
     
     // instance properties
     lazy var image1Button = createButton(selector: #selector(handleSelectPhoto))
@@ -28,51 +81,6 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         imagePicker.delegate = self
         imagePicker.imageButton = button
         present(imagePicker, animated: true)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let selectedImage = info[.originalImage] as? UIImage
-        let imageButton = (picker as? CustomImagePickerController)?.imageButton
-        imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
-        
-        dismiss(animated: true)
-        
-        let filename = UUID().uuidString
-        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
-        
-        let hud = JGProgressHUD(style: .dark)
-        hud.textLabel.text = "Uploading image..."
-        hud.show(in: view)
-        
-        guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else { return }
-        ref.putData(uploadData, metadata: nil) { (nil, err) in
-            if let err = err {
-                hud.dismiss()
-                
-                print("Failed to upload image to storage:", err)
-                return
-            }
-            
-            print("Finished uploading image")
-            ref.downloadURL(completion: { (url, err) in
-                hud.dismiss()
-                
-                if let err = err {
-                    print("Failed to retrieve download URL:", err)
-                    return
-                }
-                
-                print("Finished getting download url:", url?.absoluteString ?? "")
-                
-                if imageButton == self.image1Button {
-                    self.user?.imageUrl1 = url?.absoluteString
-                } else if imageButton == self.image2Button {
-                    self.user?.imageUrl2 = url?.absoluteString
-                } else {
-                    self.user?.imageUrl3 = url?.absoluteString
-                }
-            })
-        }
     }
     
     func createButton(selector: Selector) -> UIButton {
@@ -205,19 +213,48 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         return section == 0 ? 0 : 1
     }
     
+    @objc fileprivate func handleMinAgeChange(slider: UISlider) {
+        evaluateMinMax()
+        
+    }
+    
+    @objc fileprivate func handleMaxAgeChange(slider: UISlider) {
+        evaluateMinMax()
+        
+    }
+    
+    fileprivate func evaluateMinMax() {
+        guard let ageRangeCell = tableView.cellForRow(at: [5, 0]) as? AgeRangeCell else { return }
+        let minValue = Int(ageRangeCell.minSlider.value)
+        var maxValue = Int(ageRangeCell.maxSlider.value)
+        maxValue = max(minValue, maxValue)
+        ageRangeCell.maxSlider.value = Float(maxValue)
+        ageRangeCell.minLabel.text = "Min: \(minValue)"
+        ageRangeCell.maxLabel.text = "Max: \(maxValue)"
+        
+        user?.minSeekingAge = minValue
+        user?.maxSeekingAge = maxValue
+    }
+    
+    static let defaultMinSeekingAge = 18
+    static let defaultMaxSeekingAge = 50
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = SettingsCell(style: .default, reuseIdentifier: nil)
         if indexPath.section == 5 {
             let ageRangeCell = AgeRangeCell(style: .default, reuseIdentifier: nil)
             ageRangeCell.minSlider.addTarget(self, action: #selector(handleMinAgeChange), for: .valueChanged)
             ageRangeCell.maxSlider.addTarget(self, action: #selector(handleMaxAgeChange), for: .valueChanged)
             
-            ageRangeCell.minLabel.text = "Min \(user?.minSeekingAge ?? -1)"
-            ageRangeCell.maxLabel.text = "Max \(user?.maxSeekingAge ?? -1)"
-
+            let minAge = user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge
+            let maxAge = user?.maxSeekingAge ?? SettingsController.defaultMaxSeekingAge
+            
+            ageRangeCell.minLabel.text = "Min: \(minAge)"
+            ageRangeCell.maxLabel.text = "Min: \(maxAge)"
+            ageRangeCell.minSlider.value = Float(minAge)
+            ageRangeCell.maxSlider.value = Float(maxAge)
             return ageRangeCell
         }
-        
-        let cell = SettingsCell(style: .default, reuseIdentifier: nil)
         
         switch indexPath.section {
         case 1:
@@ -239,24 +276,6 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         }
         
         return cell
-    }
-    
-    @objc fileprivate func handleMinAgeChange(slider: UISlider) {
-        let indexPath = IndexPath(row: 0, section: 5)
-        let ageRangeCell = tableView.cellForRow(at: indexPath) as! AgeRangeCell
-        ageRangeCell.minLabel.text = "Min \(Int(slider.value))"
-        
-        self.user?.minSeekingAge = Int(slider.value)
-        
-    }
-    
-    @objc fileprivate func handleMaxAgeChange(slider: UISlider) {
-        let indexPath = IndexPath(row: 0, section: 5)
-        let ageRangeCell = tableView.cellForRow(at: indexPath) as! AgeRangeCell
-        ageRangeCell.maxLabel.text = "Max \(Int(slider.value))"
-        
-        self.user?.maxSeekingAge = Int(slider.value)
-
     }
     
     @objc fileprivate func handleNameChange(textField: UITextField) {
@@ -299,6 +318,7 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Saving settings"
         hud.show(in: view)
+        
         Firestore.firestore().collection("users").document(uid).setData(docData) { (err) in
             hud.dismiss()
             if let err = err {
@@ -307,6 +327,10 @@ class SettingsController: UITableViewController, UIImagePickerControllerDelegate
             }
             
             print("Finished saving user info")
+            
+            self.dismiss(animated: true, completion: {
+                self.delegate?.didSaveSettings()
+            })
         }
     }
     
