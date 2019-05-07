@@ -7,8 +7,18 @@
 //
 
 import UIKit
+import SDWebImage
 
 class UserDetailsController: UIViewController, UIScrollViewDelegate {
+    
+    var cardViewModel: CardViewModel! {
+        didSet {
+            infoLabel.attributedText = cardViewModel.attributedString
+            
+            guard let fristImageUrl = cardViewModel.imageUrls.first, let url = URL(string: fristImageUrl) else { return }
+            imageView.sd_setImage(with: url)
+        }
+    }
     
     lazy var scrollView: UIScrollView = {
         let sv = UIScrollView()
