@@ -50,11 +50,56 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         return button
     }()
     
+    lazy var dislikeButton = self.createButton(image: #imageLiteral(resourceName: "dismiss_circle"), selector: #selector(handleDislike))
+    
+    lazy var superlikeButton = self.createButton(image: #imageLiteral(resourceName: "super_like_circle"), selector: #selector(handleDislike))
+    
+    lazy var likeButton = self.createButton(image: #imageLiteral(resourceName: "like_circle"), selector: #selector(handleDislike))
+
+    @objc fileprivate func handleDislike() {
+        print("T##items: Any...##Any")
+    }
+
+    fileprivate func createButton(image: UIImage, selector: Selector) -> UIButton {
+        let button = UIButton(type: .system)
+        button.setImage(image.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.imageView?.contentMode = .scaleAspectFill
+        button.addTarget(self, action: selector, for: .touchUpInside)
+        
+        return button
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         
+        setupLayout()
+        setupVisualBlurEffectView()
+        
+        setupBottomControls()
+    }
+    
+    fileprivate func setupBottomControls() {
+        let stackView = UIStackView(arrangedSubviews: [dislikeButton, superlikeButton, likeButton])
+        
+        stackView.distribution = .fillEqually
+        stackView.spacing = -32
+        view.addSubview(stackView)
+        stackView.anchor(top: nil, leading: nil, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: 300, height: 80))
+        
+        stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    }
+    
+    fileprivate func setupVisualBlurEffectView() {
+        let blurEffect = UIBlurEffect(style: .regular)
+        let visualEffectView = UIVisualEffectView(effect: blurEffect)
+        
+        view.addSubview(visualEffectView)
+        visualEffectView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, trailing: view.trailingAnchor)
+    }
+    
+    fileprivate func setupLayout() {
         view.addSubview(scrollView)
         scrollView.fillSuperview()
         
