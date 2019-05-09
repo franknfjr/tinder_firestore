@@ -20,7 +20,27 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
             
             setViewControllers([controllers.first!], direction: .forward, animated: false)
 
+            setupBarViews()
         }
+    }
+    
+    fileprivate let barsStackView = UIStackView(arrangedSubviews: [])
+    fileprivate let deselectBarColor = UIColor(white: 0, alpha: 0.1)
+    
+    fileprivate func setupBarViews() {
+        cardViewModel.imageUrls.forEach { (_) in
+            let barView = UIView()
+            barView.backgroundColor = deselectBarColor
+            barView.layer.cornerRadius = 2
+            barsStackView.addArrangedSubview(barView)
+        }
+        
+        barsStackView.arrangedSubviews.first?.backgroundColor = .white
+        barsStackView.spacing = 4
+        barsStackView.distribution = .fillEqually
+        
+        view.addSubview(barsStackView)
+        barsStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 8, bottom: 0, right: 8), size: .init(width: 0, height: 4))
     }
     
     var controllers = [UIViewController]()
