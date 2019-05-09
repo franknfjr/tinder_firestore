@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSource {
+class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     var cardViewModel: CardViewModel! {
         didSet {
@@ -40,7 +40,17 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
         barsStackView.distribution = .fillEqually
         
         view.addSubview(barsStackView)
-        barsStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 8, bottom: 0, right: 8), size: .init(width: 0, height: 4))
+        let paddingTop = UIApplication.shared.statusBarFrame.height + 8
+        barsStackView.anchor(top: view.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: paddingTop, left: 8, bottom: 0, right: 8), size: .init(width: 0, height: 4))
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        let currentPhotoController = viewControllers?.first
+        if let index = controllers.firstIndex(where: {$0 == currentPhotoController}) {
+            barsStackView.arrangedSubviews.forEach ({$0.backgroundColor = deselectBarColor})
+            barsStackView.arrangedSubviews[index].backgroundColor = .white
+        }
+        
     }
     
     var controllers = [UIViewController]()
@@ -48,7 +58,7 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
-
+        delegate = self
         view.backgroundColor = .white
         
     }
