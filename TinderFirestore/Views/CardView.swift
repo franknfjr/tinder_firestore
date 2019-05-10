@@ -21,7 +21,7 @@ class CardView: UIView {
         didSet {
             let imageName = cardViewModel.imageUrls.first ?? ""
             if let url = URL(string: imageName) {
-                imageView.sd_setImage(with: url)
+                imageView.sd_setImage(with: url, placeholderImage: #imageLiteral(resourceName: "question-mark-xxl"), options: .continueInBackground)
             }
             
             informationLabel.attributedText = cardViewModel.attributedString

@@ -23,8 +23,8 @@ class RegistrationViewModel {
     var email: String? { didSet { checkFormValidity() }}
     var password: String? { didSet { checkFormValidity() }}
     
-    fileprivate func checkFormValidity() {
-        let ifFormValid = fullName?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false
+    func checkFormValidity() {
+        let ifFormValid = fullName?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false && bindableImage.value != nil
         
         bindableIsFormValid.value = ifFormValid
     }
@@ -86,7 +86,7 @@ class RegistrationViewModel {
             "age": 18,
             "minSeekingAge": SettingsController.defaultMinSeekingAge,
             "maxSeekingAge": SettingsController.defaultMaxSeekingAge
-            ]
+        ]
         Firestore.firestore().collection("users").document(uid).setData(docData, completion: { (err) in
             if let err = err {
                 completion(err)
