@@ -37,16 +37,15 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // you want to kick the user out when they log out
         if Auth.auth().currentUser == nil {
-            let loginController = LoginController()
-            loginController.delegate = self
-            let navController = UINavigationController(rootViewController: loginController)
+            let registrationController = RegistrationController()
+            registrationController.delegate = self
+            let navController = UINavigationController(rootViewController: registrationController)
             present(navController, animated: true)
         }
     }
     
-    func didFinishLoggingIn() {
+    func didFinishLogginIn() {
         fetchCurrentUser()
     }
     

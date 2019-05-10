@@ -25,6 +25,8 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
 
 class RegistrationController: UIViewController {
     
+    var delegate: LoginControllerDelegate?
+    
     let selectPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Select Photo", for: .normal)
@@ -114,21 +116,21 @@ class RegistrationController: UIViewController {
     
     @objc fileprivate func handleRegister() {
         self.handleTapDismiss()
-        
-        registrationViewModel.bindableIsRegistering.value = true
-        
         registrationViewModel.performRegistration { [weak self] (err) in
             if let err = err {
                 self?.showHUDWithError(error: err)
                 return
             }
-            
-            print("Finished registering our user")
+            print("Finished registering")
+            self?.dismiss(animated: true, completion: {
+                self?.delegate?.didFinishLogginIn()
+            })
         }
     }
     
     @objc fileprivate func handleGoToLogin() {
         let loginController = LoginController()
+        loginController.delegate = delegate
         navigationController?.pushViewController(loginController, animated: true)
     }
     
@@ -148,7 +150,7 @@ class RegistrationController: UIViewController {
     }
     
     fileprivate func setupRegistrationViewModelObserver() {
-        registrationViewModel.bindableisFormValid.bind { [unowned self] (isFormValid) in
+        registrationViewModel.bindableIsFormValid.bind { [unowned self] (isFormValid) in
             
             guard let isFormValid = isFormValid else { return }
             
