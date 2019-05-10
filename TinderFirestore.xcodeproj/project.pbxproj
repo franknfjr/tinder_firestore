@@ -32,6 +32,7 @@
 		BB9C788222812EBA00F58940 /* Firebase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB9C788122812EBA00F58940 /* Firebase+Utils.swift */; };
 		BBA20C10227297FD007C41A3 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA20C0F227297FD007C41A3 /* RegistrationController.swift */; };
 		BBB1CA92227D19470005631A /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB1CA91227D19470005631A /* SettingsController.swift */; };
+		BBD5431622850D8D00AF3EE6 /* PhotoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD5431522850D8D00AF3EE6 /* PhotoController.swift */; };
 		FD542CDF07E1490C826267BA /* Pods_TinderFirestore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE33B7FCA6BA4FB78A2EEE8E /* Pods_TinderFirestore.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,7 @@
 		BB9C788122812EBA00F58940 /* Firebase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firebase+Utils.swift"; sourceTree = "<group>"; };
 		BBA20C0F227297FD007C41A3 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		BBB1CA91227D19470005631A /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		BBD5431522850D8D00AF3EE6 /* PhotoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoController.swift; sourceTree = "<group>"; };
 		FE33B7FCA6BA4FB78A2EEE8E /* Pods_TinderFirestore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TinderFirestore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -168,6 +170,7 @@
 			children = (
 				BB7F24F42281B3770061644D /* UserDetailsController.swift */,
 				BB931F7A228260370038E38B /* SwipingPhotosController.swift */,
+				BBD5431522850D8D00AF3EE6 /* PhotoController.swift */,
 			);
 			path = UserDetails;
 			sourceTree = "<group>";
@@ -359,6 +362,7 @@
 				BBB1CA92227D19470005631A /* SettingsController.swift in Sources */,
 				BB9C787E22811CBC00F58940 /* LoginController.swift in Sources */,
 				BB01D783226DF3D4004FCB5C /* TopNavigationStackView.swift in Sources */,
+				BBD5431622850D8D00AF3EE6 /* PhotoController.swift in Sources */,
 				BB0632DF226EAC06006E647A /* User.swift in Sources */,
 				BBA20C10227297FD007C41A3 /* RegistrationController.swift in Sources */,
 				BB9C788022811CE200F58940 /* LoginViewModel.swift in Sources */,
