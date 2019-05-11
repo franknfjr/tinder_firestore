@@ -31,6 +31,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         
+        bottomControls.dislikeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
+
         setupLayout()
         
         fetchCurrentUser()
