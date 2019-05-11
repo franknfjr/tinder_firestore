@@ -31,8 +31,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         
-        bottomControls.dislikeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
-
+        bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
+        
         setupLayout()
         
         fetchCurrentUser()
@@ -78,6 +78,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         let minAge = user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge
         let maxAge = user?.maxSeekingAge ?? SettingsController.defaultMaxSeekingAge
         
+        topCardView = nil
+        
         let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
         
         query.getDocuments { (snapshot, err) in
@@ -109,9 +111,17 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     var topCardView: CardView?
     
     @objc fileprivate func handleLike() {
+        performSwipeAnimation(translation: 700, angle: 15)
+    }
+    
+    @objc fileprivate func handleDislike() {
+        performSwipeAnimation(translation: -700, angle: -15)
+    }
+    
+    fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
         let duration = 0.3
         let translateionAnimation = CABasicAnimation(keyPath: "position.x")
-        translateionAnimation.toValue = 700
+        translateionAnimation.toValue = translation
         translateionAnimation.duration = duration
         
         translateionAnimation.fillMode = .forwards
@@ -119,7 +129,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         translateionAnimation.isRemovedOnCompletion = false
         
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotationAnimation.toValue = 15 * CGFloat.pi / 180
+        rotationAnimation.toValue = angle * CGFloat.pi / 180
         rotationAnimation.duration = duration
         
         let cardView = topCardView
@@ -134,7 +144,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
         CATransaction.commit()
     }
-    
     
     func didRemoveCard(cardView: CardView) {
         self.topCardView?.removeFromSuperview()
