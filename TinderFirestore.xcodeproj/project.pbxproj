@@ -179,9 +179,8 @@
 			isa = PBXGroup;
 			children = (
 				BB7F24F32281B3320061644D /* UserDetails */,
-				BB9C787C22811C7B00F58940 /* Login */,
+				BB9C787C22811C7B00F58940 /* Auth */,
 				BB05EF42226CA68F002BB5C8 /* HomeController.swift */,
-				BBA20C0F227297FD007C41A3 /* RegistrationController.swift */,
 				BB01D32C227324B80038064F /* CustomTextField.swift */,
 				BB035DB022787B5C0055F46E /* Bindable.swift */,
 				BBB1CA91227D19470005631A /* SettingsController.swift */,
@@ -199,12 +198,13 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		BB9C787C22811C7B00F58940 /* Login */ = {
+		BB9C787C22811C7B00F58940 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
+				BBA20C0F227297FD007C41A3 /* RegistrationController.swift */,
 				BB9C787D22811CBC00F58940 /* LoginController.swift */,
 			);
-			path = Login;
+			path = Auth;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

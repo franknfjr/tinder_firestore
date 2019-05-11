@@ -15,6 +15,8 @@ protocol CardViewDelegate {
 
 class CardView: UIView {
     
+    var nextCardView: CardView?
+    
     var delegate: CardViewDelegate?
     
     var cardViewModel: CardViewModel! {
