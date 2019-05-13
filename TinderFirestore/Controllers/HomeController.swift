@@ -110,26 +110,61 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     var topCardView: CardView?
     
-    @objc fileprivate func handleLike() {
+    @objc func handleLike() {
+        saveSwipeToFirestore(didLike: 1)
         performSwipeAnimation(translation: 700, angle: 15)
     }
     
-    @objc fileprivate func handleDislike() {
+    @objc func handleDislike() {
+        saveSwipeToFirestore(didLike: 0)
         performSwipeAnimation(translation: -700, angle: -15)
     }
     
-    fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
-        let duration = 0.3
-        let translateionAnimation = CABasicAnimation(keyPath: "position.x")
-        translateionAnimation.toValue = translation
-        translateionAnimation.duration = duration
+    fileprivate func saveSwipeToFirestore(didLike: Int) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        translateionAnimation.fillMode = .forwards
-        translateionAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
-        translateionAnimation.isRemovedOnCompletion = false
+        guard let cardUID = topCardView?.cardViewModel.uid else { return }
+        
+        let documentData = [cardUID: didLike]
+        
+        Firestore.firestore().collection("swipes").document(uid).getDocument { (snapshot, err) in
+            if let err = err {
+                print("Failed to fetch swipe document:", err)
+                return
+            }
+            
+            if snapshot?.exists == true {
+                Firestore.firestore().collection("swipes").document(uid).updateData(documentData) { (err) in
+                    if let err = err {
+                        print("Failed to save swipe data:", err)
+                        return
+                    }
+                    print("Successfully saved swiped...")
+                }
+            } else {
+                Firestore.firestore().collection("swipes").document(uid).setData(documentData) { (err) in
+                    if let err = err {
+                        print("Failed to save swipe data:", err)
+                        return
+                    }
+                    print("Successfully saved swiped...")
+                }
+            }
+        }
+    }
+    
+    fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
+        let duration = 0.9
+        let translationAnimation = CABasicAnimation(keyPath: "position.x")
+        translationAnimation.toValue = translation
+        translationAnimation.duration = duration
+        
+        translationAnimation.fillMode = .forwards
+        translationAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        translationAnimation.isRemovedOnCompletion = false
         
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotationAnimation.toValue = angle * CGFloat.pi / 180
+        rotationAnimation.toValue = (angle * CGFloat.pi) / 180
         rotationAnimation.duration = duration
         
         let cardView = topCardView
@@ -139,7 +174,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             cardView?.removeFromSuperview()
         }
         
-        cardView?.layer.add(translateionAnimation, forKey: "translation")
+        cardView?.layer.add(translationAnimation, forKey: "translation")
         cardView?.layer.add(rotationAnimation, forKey: "rotation")
         
         CATransaction.commit()
