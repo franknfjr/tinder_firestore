@@ -12,34 +12,33 @@ import JGProgressHUD
 
 class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate {
     
-    let topStackView = TopNavigationStackView()
-    let cardsDeckView = UIView()
-    let bottomControls = HomeBottomControlsStackView()
-    var lastFetchUser: User?
-    fileprivate var user: User?
-    fileprivate let hud = JGProgressHUD(style: .dark)
     
-    var cardViewModels = [CardViewModel]() // empty array
+    let topStackView = TopNavigationStackView()
+    let bottomControls = HomeBottomControlsStackView()
+    let cardsDeckView = UIView()
+    
+    
+    var cardViewModels = [CardViewModel]()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
-        setupLayout()
-        
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
-        
         bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
         
         setupLayout()
-        
         fetchCurrentUser()
         
     }
     
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        print("HomeController did appear")
+        // you want to kick the user out when they log out
         if Auth.auth().currentUser == nil {
             let registrationController = RegistrationController()
             registrationController.delegate = self
@@ -52,12 +51,13 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         fetchCurrentUser()
     }
     
-    //MARK:- Fileprivate
+    fileprivate let hud = JGProgressHUD(style: .dark)
+    fileprivate var user: User?
+    
     fileprivate func fetchCurrentUser() {
         hud.textLabel.text = "Loading"
         hud.show(in: view)
         cardsDeckView.subviews.forEach({$0.removeFromSuperview()})
-        
         Firestore.firestore().fetchCurrentUser { (user, err) in
             if let err = err {
                 print("Failed to fetch user:", err)
@@ -68,6 +68,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             
             self.fetchSwipes()
             
+            //            self.fetchUsersFromFirestore()
         }
     }
     
@@ -80,6 +81,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 print("failed to fetch swipes for currently logged in user", err)
                 return
             }
+            
             print("Swipes", snapshot?.data() ?? "")
             guard let data = snapshot?.data() as? [String: Int] else { return }
             self.swipes = data
@@ -92,18 +94,24 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         fetchUsersFromFirestore()
     }
     
+    var lastFetchedUser: User?
+    
     fileprivate func fetchUsersFromFirestore() {
+        //        guard let minAge = user?.minimumSeekingAge, let maxAge = user?.maxSeekingAge else {
+        //            self.hud.dismiss()
+        //            return
+        //        }
+        
         let minAge = user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge
         let maxAge = user?.maxSeekingAge ?? SettingsController.defaultMaxSeekingAge
         
-        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
-        
+        //Introducing pagination here to page through 2 users at a time
+        let query = Firestore.firestore().collection("users").whereField("age", isGreaterThan: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
         topCardView = nil
-
         query.getDocuments { (snapshot, err) in
             self.hud.dismiss()
             if let err = err {
-                print("Faild to fetch users:", err)
+                print("Failed to fetch users:", err)
                 return
             }
             
@@ -113,6 +121,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
                 let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
+                //                let hasNotSwipedBefore = self.swipes[user.uid!] == nil
                 let hasNotSwipedBefore = true
                 if isNotCurrentUser && hasNotSwipedBefore {
                     let cardView = self.setupCardFromUser(user: user)
@@ -124,6 +133,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                         self.topCardView = cardView
                     }
                 }
+                
             })
         }
     }
@@ -135,30 +145,28 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         performSwipeAnimation(translation: 700, angle: 15)
     }
     
-    @objc func handleDislike() {
-        saveSwipeToFirestore(didLike: 0)
-        performSwipeAnimation(translation: -700, angle: -15)
-    }
-    
     fileprivate func saveSwipeToFirestore(didLike: Int) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
         guard let cardUID = topCardView?.cardViewModel.uid else { return }
         
+        
+        
         let documentData = [cardUID: didLike]
         
         Firestore.firestore().collection("swipes").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print("Failed to fetch swipe document:", err)
+                print("failed to fetch swipe document", err)
                 return
             }
             
             if snapshot?.exists == true {
                 Firestore.firestore().collection("swipes").document(uid).updateData(documentData) { (err) in
                     if let err = err {
-                        print("Failed to save swipe data:", err)
+                        print("failed to save swipe data", err)
                         return
                     }
+                    
                     print("Successfully saved swiped...")
                     if didLike == 1 {
                         self.checkIfMatchExists(cardUID: cardUID)
@@ -167,7 +175,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             } else {
                 Firestore.firestore().collection("swipes").document(uid).setData(documentData) { (err) in
                     if let err = err {
-                        print("Failed to save swipe data:", err)
+                        print("failed to save swipe data", err)
                         return
                     }
                     print("Successfully saved swiped...")
@@ -205,22 +213,27 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         
     }
     
+    @objc func handleDislike() {
+        saveSwipeToFirestore(didLike: 0)
+        performSwipeAnimation(translation: -700, angle: -15)
+    }
+    
     fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
         let duration = 0.5
         let translationAnimation = CABasicAnimation(keyPath: "position.x")
         translationAnimation.toValue = translation
         translationAnimation.duration = duration
-        
         translationAnimation.fillMode = .forwards
         translationAnimation.timingFunction = CAMediaTimingFunction(name: .easeOut)
         translationAnimation.isRemovedOnCompletion = false
         
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotationAnimation.toValue = (angle * CGFloat.pi) / 180
+        rotationAnimation.toValue = angle * CGFloat.pi / 180
         rotationAnimation.duration = duration
         
         let cardView = topCardView
         topCardView = cardView?.nextCardView
+        
         
         CATransaction.setCompletionBlock {
             cardView?.removeFromSuperview()
@@ -237,6 +250,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         self.topCardView = self.topCardView?.nextCardView
     }
     
+    
     fileprivate func setupCardFromUser(user: User) -> CardView {
         let cardView = CardView(frame: .zero)
         cardView.delegate = self
@@ -244,41 +258,22 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         cardsDeckView.addSubview(cardView)
         cardsDeckView.sendSubviewToBack(cardView)
         cardView.fillSuperview()
-        
         return cardView
     }
     
     func didTapMoreInfo(cardViewModel: CardViewModel) {
+        
         let userDetailsController = UserDetailsController()
         userDetailsController.cardViewModel = cardViewModel
         present(userDetailsController, animated: true)
+        
     }
     
-    @objc fileprivate func handleSettings() {
+    @objc func handleSettings() {
         let settingsController = SettingsController()
         settingsController.delegate = self
         let navController = UINavigationController(rootViewController: settingsController)
         present(navController, animated: true)
-    }
-    
-    func didSaveSettings() {
-        fetchCurrentUser()
-    }
-    
-    fileprivate func setupLayout() {
-        view.backgroundColor = .white
-        let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardsDeckView, bottomControls])
-        overallStackView.axis = .vertical
-        
-        view.addSubview(overallStackView)
-        
-        overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
-        
-        overallStackView.isLayoutMarginsRelativeArrangement = true
-        overallStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
-        
-        overallStackView.bringSubviewToFront(cardsDeckView)
-        
     }
     
     fileprivate func setupFirestoreUserCards() {
@@ -286,9 +281,29 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             let cardView = CardView(frame: .zero)
             
             cardView.cardViewModel = cardVM
+            
             cardsDeckView.addSubview(cardView)
             cardView.fillSuperview()
         }
     }
+    
+    func didSaveSettings() {
+        fetchCurrentUser()
+    }
+    
+    // MARK:- Fileprivate
+    
+    fileprivate func setupLayout() {
+        view.backgroundColor = .white
+        let overallStackView = UIStackView(arrangedSubviews: [topStackView, cardsDeckView, bottomControls])
+        overallStackView.axis = .vertical
+        view.addSubview(overallStackView)
+        overallStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
+        overallStackView.isLayoutMarginsRelativeArrangement = true
+        overallStackView.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
+        
+        overallStackView.bringSubviewToFront(cardsDeckView)
+    }
+    
+    
 }
-
