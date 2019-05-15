@@ -30,7 +30,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
         
         setupLayout()
-//        fetchCurrentUser()
+        fetchCurrentUser()
         
     }
     
@@ -68,7 +68,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             
             self.fetchSwipes()
             
-            //            self.fetchUsersFromFirestore()
         }
     }
     
@@ -82,9 +81,11 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 return
             }
             
-            print("Swipes", snapshot?.data() ?? "")
-            guard let data = snapshot?.data() as? [String: Int] else { return }
-            self.swipes = data
+            if let data = snapshot?.data() as? [String: Int] {
+                print("Swipes", snapshot?.data() ?? "")
+                self.swipes = data
+            }
+            
             self.fetchUsersFromFirestore()
         }
     }
