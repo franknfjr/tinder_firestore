@@ -230,7 +230,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         let cardView = topCardView
         topCardView = cardView?.nextCardView
         
-        
         CATransaction.setCompletionBlock {
             cardView?.removeFromSuperview()
         }

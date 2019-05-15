@@ -12,7 +12,7 @@ import UIKit
 class MatchView: UIView {
     
     fileprivate let itsAMatchImageView: UIImageView = {
-        let imageView = UIImageView(image: #imageLiteral(resourceName: "match"))
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "itsamatch"))
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
