@@ -30,7 +30,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         
         bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
-        
         bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
         
         setupLayout()
@@ -72,26 +71,24 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         }
     }
     
-    var swipes = [String: Int]()
+    var swipes = [String : Int]()
     
     fileprivate func fetchSwipes() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         Firestore.firestore().collection("swipes").document(uid).getDocument { (snapshot, err) in
             if let err = err {
-                print("Failed to fetch swipes info for currently logged in user:", err)
+                print("failed to fetch swipes for currently logged in user", err)
                 return
             }
-            
-            print("Swipes:", snapshot?.data() ?? "")
+            print("Swipes", snapshot?.data() ?? "")
             guard let data = snapshot?.data() as? [String: Int] else { return }
-            
             self.swipes = data
-            
             self.fetchUsersFromFirestore()
         }
     }
     
     @objc fileprivate func handleRefresh() {
+        cardsDeckView.subviews.forEach ({$0.removeFromSuperview()})
         fetchUsersFromFirestore()
     }
     
@@ -99,10 +96,10 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         let minAge = user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge
         let maxAge = user?.maxSeekingAge ?? SettingsController.defaultMaxSeekingAge
         
-        topCardView = nil
-        
         let query = Firestore.firestore().collection("users").whereField("age", isGreaterThanOrEqualTo: minAge).whereField("age", isLessThanOrEqualTo: maxAge)
         
+        topCardView = nil
+
         query.getDocuments { (snapshot, err) in
             self.hud.dismiss()
             if let err = err {
@@ -116,7 +113,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 let userDictionary = documentSnapshot.data()
                 let user = User(dictionary: userDictionary)
                 let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
-                let hasNotSwipedBefore = self.swipes[user.uid!] == nil
+                let hasNotSwipedBefore = true
                 if isNotCurrentUser && hasNotSwipedBefore {
                     let cardView = self.setupCardFromUser(user: user)
                     
@@ -163,8 +160,9 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                         return
                     }
                     print("Successfully saved swiped...")
-                    self.checkIfMatchExists(cardUID)
-                    
+                    if didLike == 1 {
+                        self.checkIfMatchExists(cardUID: cardUID)
+                    }
                 }
             } else {
                 Firestore.firestore().collection("swipes").document(uid).setData(documentData) { (err) in
@@ -173,37 +171,42 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                         return
                     }
                     print("Successfully saved swiped...")
-                    self.checkIfMatchExists(cardUID)
-                    
+                    if didLike == 1 {
+                        self.checkIfMatchExists(cardUID: cardUID)
+                    }
                 }
             }
         }
     }
     
-    fileprivate func checkIfMatchExists(_ cardUID: String) {
+    fileprivate func checkIfMatchExists(cardUID: String) {
+        
         Firestore.firestore().collection("swipes").document(cardUID).getDocument { (snapshot, err) in
             if let err = err {
-                print("Failed to fetch document for card user:", err)
+                print("failed to fetch document for cardUser", err)
                 return
-                
             }
-            
             guard let data = snapshot?.data() else { return }
+            
             guard let uid = Auth.auth().currentUser?.uid else { return }
             
-            let hasMatched = data[uid] as? Int == 1
-            
-            if hasMatched {
-                let hud = JGProgressHUD(style: .dark)
-                hud.textLabel.text = "Found a match"
-                hud.show(in: self.view)
-                hud.dismiss(afterDelay: 4)
+            let hasMatch = data[uid] as? Int == 1
+            if hasMatch {
+                print("has matched")
+                self.presentMatchView(cardUID: cardUID)
             }
         }
     }
     
+    fileprivate func presentMatchView(cardUID: String) {
+        let matchView = MatchView()
+        view.addSubview(matchView)
+        matchView.fillSuperview()
+        
+    }
+    
     fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
-        let duration = 0.9
+        let duration = 0.5
         let translationAnimation = CABasicAnimation(keyPath: "position.x")
         translationAnimation.toValue = translation
         translationAnimation.duration = duration
@@ -259,7 +262,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     }
     
     func didSaveSettings() {
-        print("Notified of dismissal from SettingsController in HomeController")
         fetchCurrentUser()
     }
     
