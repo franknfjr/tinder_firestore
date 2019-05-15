@@ -30,7 +30,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
         
         setupLayout()
-        fetchCurrentUser()
+//        fetchCurrentUser()
         
     }
     
@@ -96,12 +96,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     var lastFetchedUser: User?
     
-    fileprivate func fetchUsersFromFirestore() {
-        //        guard let minAge = user?.minimumSeekingAge, let maxAge = user?.maxSeekingAge else {
-        //            self.hud.dismiss()
-        //            return
-        //        }
-        
+    fileprivate func fetchUsersFromFirestore() {        
         let minAge = user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge
         let maxAge = user?.maxSeekingAge ?? SettingsController.defaultMaxSeekingAge
         
