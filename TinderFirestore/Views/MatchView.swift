@@ -75,8 +75,11 @@ class MatchView: UIView {
         
         cardUserImageView.transform = CGAffineTransform(rotationAngle: angle).concatenating(CGAffineTransform(translationX: -200, y: 0))
         
+        sendMessageButton.transform = CGAffineTransform(translationX: -500, y: 0)
+        keepSwipingButton.transform = CGAffineTransform(translationX: 500, y: 0)
+        
         // keyframe animation for segmented animation
-        UIView.animateKeyframes(withDuration: 1.2, delay: 0, options: .calculationModeCubic, animations: {
+        UIView.animateKeyframes(withDuration: 1.3, delay: 0, options: .calculationModeCubic, animations: {
             
             // animation 1 - translation back to original position
             UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.45, animations: {
@@ -92,6 +95,11 @@ class MatchView: UIView {
         }) { (_) in
 
         }
+        
+        UIView.animate(withDuration: 0.75, delay: 0.6 * 1.3, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.1, options: .curveEaseOut, animations: {
+            self.sendMessageButton.transform = .identity
+            self.keepSwipingButton.transform = .identity
+        })
     }
     
     fileprivate func setupLayout() {
