@@ -64,6 +64,34 @@ class MatchView: UIView {
         
         setupBlurView()
         setupLayout()
+        
+        setupAnimations()
+    }
+    
+    fileprivate func setupAnimations() {
+        let angle = 30 * CGFloat.pi / 180
+        
+        currentUserImageView.transform = CGAffineTransform(rotationAngle: -angle).concatenating(CGAffineTransform(translationX: 200, y: 0))
+        
+        cardUserImageView.transform = CGAffineTransform(rotationAngle: angle).concatenating(CGAffineTransform(translationX: -200, y: 0))
+        
+        // keyframe animation for segmented animation
+        UIView.animateKeyframes(withDuration: 1.2, delay: 0, options: .calculationModeCubic, animations: {
+            
+            // animation 1 - translation back to original position
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.45, animations: {
+                self.currentUserImageView.transform = CGAffineTransform(rotationAngle: -angle)
+                self.cardUserImageView.transform = CGAffineTransform(rotationAngle: angle)
+            })
+            
+            // animation 2 - rotation
+            UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4, animations: {
+                self.currentUserImageView.transform = .identity
+                self.cardUserImageView.transform = .identity
+            })
+        }) { (_) in
+
+        }
     }
     
     fileprivate func setupLayout() {
