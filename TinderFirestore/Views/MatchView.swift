@@ -37,6 +37,9 @@ class MatchView: UIView {
                 self.currentUserImageView.sd_setImage(with: currentUserUrl, completed: { (_, _, _, _) in
                     self.setupAnimations()
                 })
+                
+                // setup the description label text correctly somewhere inside of here
+                self.descriptionLabel.text = "You and \(user.name ?? "") have liked\neach other."
             }
         }
     }
