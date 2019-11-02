@@ -8,11 +8,12 @@ target 'TinderFirestore' do
   # Pods for TinderFirestore
 
   # Pods for Tinder
-  pod 'Firebase/Firestore'
-  pod 'Firebase/Auth'
-  pod 'Firebase/Storage'
-  pod 'Firebase/Core'
-  pod 'SDWebImage'
-  pod 'JGProgressHUD'
+  pod 'Firebase/Firestore’,’~>5.10.0’
+  pod 'Firebase/Auth’,’~>5.10.0’
+  pod 'Firebase/Storage’,’~>5.10.0’
+  pod 'Firebase/Core’
+  pod 'SDWebImage','~>4.4.2’
+  pod 'JGProgressHUD','~>2.0.3'
+  pod 'GoogleAppMeasurement', '~> 5.2.0'
 
 end

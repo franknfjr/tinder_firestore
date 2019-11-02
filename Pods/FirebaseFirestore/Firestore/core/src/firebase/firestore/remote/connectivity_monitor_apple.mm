@@ -37,7 +37,7 @@ namespace {
 
 using NetworkStatus = ConnectivityMonitor::NetworkStatus;
 using util::AsyncQueue;
-using util::ExecutorLibdispatch;
+using util::internal::ExecutorLibdispatch;
 
 NetworkStatus ToNetworkStatus(SCNetworkReachabilityFlags flags) {
   if (!(flags & kSCNetworkReachabilityFlagsReachable)) {
@@ -77,13 +77,7 @@ void OnReachabilityChangedCallback(SCNetworkReachabilityRef /*unused*/,
 class ConnectivityMonitorApple : public ConnectivityMonitor {
  public:
   explicit ConnectivityMonitorApple(AsyncQueue* worker_queue)
-      : ConnectivityMonitor{worker_queue} {
-    reachability_ = CreateReachability();
-    if (!reachability_) {
-      LOG_DEBUG("Failed to create reachability monitor.");
-      return;
-    }
-
+      : ConnectivityMonitor{worker_queue}, reachability_{CreateReachability()} {
     SCNetworkReachabilityFlags flags;
     if (SCNetworkReachabilityGetFlags(reachability_, &flags)) {
       SetInitialStatus(ToNetworkStatus(flags));
@@ -114,14 +108,10 @@ class ConnectivityMonitorApple : public ConnectivityMonitor {
   }
 
   ~ConnectivityMonitorApple() {
-    if (reachability_) {
-      bool success =
-          SCNetworkReachabilitySetDispatchQueue(reachability_, nullptr);
-      if (!success) {
-        LOG_DEBUG("Couldn't unset reachability queue");
-      }
-
-      CFRelease(reachability_);
+    bool success =
+        SCNetworkReachabilitySetDispatchQueue(reachability_, nullptr);
+    if (!success) {
+      LOG_DEBUG("Couldn't unset reachability queue");
     }
   }
 
@@ -131,7 +121,7 @@ class ConnectivityMonitorApple : public ConnectivityMonitor {
   }
 
  private:
-  SCNetworkReachabilityRef reachability_ = nil;
+  SCNetworkReachabilityRef reachability_;
 };
 
 namespace {

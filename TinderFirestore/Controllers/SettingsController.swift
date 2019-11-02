@@ -122,19 +122,19 @@ class SettingsController: UITableViewController {
     
     fileprivate func loadUserPhotos() {
         if let imageUrl = user?.imageUrl1, let url = URL(string: imageUrl)  {
-            SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+            SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
                 self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
             }
         }
         
         if let imageUrl = user?.imageUrl2, let url = URL(string: imageUrl)  {
-            SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+            SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
                 self.image2Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
             }
         }
         
         if let imageUrl = user?.imageUrl3, let url = URL(string: imageUrl)  {
-            SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
+            SDWebImageManager.shared().loadImage(with: url, options: .continueInBackground, progress: nil) { (image, _, _, _, _, _) in
                 self.image3Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
             }
         }

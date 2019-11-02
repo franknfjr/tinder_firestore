@@ -16,60 +16,15 @@
 
 #import <Foundation/Foundation.h>
 
-#include <string>
-#include <unordered_map>
-
-#import "FIRFirestoreSettings.h"
 #import "Firestore/Source/Local/FSTQueryData.h"
-
-#include "Firestore/core/src/firebase/firestore/local/query_cache.h"
 #include "Firestore/core/src/firebase/firestore/model/document_key.h"
 #include "Firestore/core/src/firebase/firestore/model/types.h"
+
+@protocol FSTQueryCache;
 
 @class FSTLRUGarbageCollector;
 
 extern const firebase::firestore::model::ListenSequenceNumber kFSTListenSequenceNumberInvalid;
-
-namespace firebase {
-namespace firestore {
-namespace local {
-
-struct LruParams {
-  static const int64_t CacheSizeUnlimited = -1;
-
-  static LruParams Default() {
-    return LruParams{100 * 1024 * 1024, 10, 1000};
-  }
-
-  static LruParams Disabled() {
-    return LruParams{kFIRFirestoreCacheSizeUnlimited, 0, 0};
-  }
-
-  static LruParams WithCacheSize(int64_t cacheSize) {
-    LruParams params = Default();
-    params.minBytesThreshold = cacheSize;
-    return params;
-  }
-
-  int64_t minBytesThreshold;
-  int percentileToCollect;
-  int maximumSequenceNumbersToCollect;
-};
-
-struct LruResults {
-  static LruResults DidNotRun() {
-    return LruResults{/* didRun= */ false, 0, 0, 0};
-  }
-
-  bool didRun;
-  int sequenceNumbersCollected;
-  int targetsRemoved;
-  int documentsRemoved;
-};
-
-}  // namespace local
-}  // namespace firestore
-}  // namespace firebase
 
 /**
  * Persistence layers intending to use LRU Garbage collection should implement this protocol. This
@@ -81,13 +36,15 @@ struct LruResults {
  * Enumerates all the targets that the delegate is aware of. This is typically all of the targets in
  * an FSTQueryCache.
  */
-- (void)enumerateTargetsUsingCallback:(const firebase::firestore::local::TargetCallback &)callback;
+- (void)enumerateTargetsUsingBlock:(void (^)(FSTQueryData *queryData, BOOL *stop))block;
 
 /**
  * Enumerates all of the outstanding mutations.
  */
-- (void)enumerateMutationsUsingCallback:
-    (const firebase::firestore::local::OrphanedDocumentCallback &)callback;
+- (void)enumerateMutationsUsingBlock:
+    (void (^)(const firebase::firestore::model::DocumentKey &key,
+              firebase::firestore::model::ListenSequenceNumber sequenceNumber,
+              BOOL *stop))block;
 
 /**
  * Removes all unreferenced documents from the cache that have a sequence number less than or equal
@@ -102,14 +59,9 @@ struct LruResults {
  */
 - (int)removeTargetsThroughSequenceNumber:
            (firebase::firestore::model::ListenSequenceNumber)sequenceNumber
-                              liveQueries:
-                                  (const std::unordered_map<firebase::firestore::model::TargetId,
-                                                            FSTQueryData *> &)liveQueries;
+                              liveQueries:(NSDictionary<NSNumber *, FSTQueryData *> *)liveQueries;
 
 - (size_t)byteSize;
-
-/** Returns the number of targets and orphaned documents cached. */
-- (size_t)sequenceNumberCount;
 
 /** Access to the underlying LRU Garbage collector instance. */
 @property(strong, nonatomic, readonly) FSTLRUGarbageCollector *gc;
@@ -122,11 +74,8 @@ struct LruResults {
  */
 @interface FSTLRUGarbageCollector : NSObject
 
-- (instancetype)initWithDelegate:(id<FSTLRUDelegate>)delegate
-                          params:(firebase::firestore::local::LruParams)params
-    NS_DESIGNATED_INITIALIZER;
-
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithQueryCache:(id<FSTQueryCache>)queryCache
+                          delegate:(id<FSTLRUDelegate>)delegate;
 
 /**
  * Given a target percentile, return the number of queries that make up that percentage of the
@@ -147,9 +96,7 @@ struct LruResults {
  */
 - (int)removeQueriesUpThroughSequenceNumber:
            (firebase::firestore::model::ListenSequenceNumber)sequenceNumber
-                                liveQueries:
-                                    (const std::unordered_map<firebase::firestore::model::TargetId,
-                                                              FSTQueryData *> &)liveQueries;
+                                liveQueries:(NSDictionary<NSNumber *, FSTQueryData *> *)liveQueries;
 
 /**
  * Removes all unreferenced documents from the cache that have a sequence number less than or equal
@@ -159,8 +106,5 @@ struct LruResults {
     (firebase::firestore::model::ListenSequenceNumber)sequenceNumber;
 
 - (size_t)byteSize;
-
-- (firebase::firestore::local::LruResults)collectWithLiveTargets:
-    (const std::unordered_map<firebase::firestore::model::TargetId, FSTQueryData *> &)liveTargets;
 
 @end
